@@ -8,7 +8,7 @@
 
     <dubbo:application name="pinyougou-seckill-web"></dubbo:application>
 
-    <dubbo:registry protocol="zookeeper" address="192.168.25.135" port="2181"></dubbo:registry>
+    <dubbo:registry protocol="zookeeper" address="192.168.1.132" port="2181"></dubbo:registry>
 
     <!--注解的方式引入服务-->
     <dubbo:annotation package="com.pinyougou.seckill.controller"></dubbo:annotation>

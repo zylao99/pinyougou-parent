@@ -5,7 +5,7 @@ import redis.clients.jedis.Jedis;
 public class Redistest {
     public static void main(String[] args) {
         //连接本地的 Redis 服务
-        Jedis jedis = new Jedis("192.168.25.135",6379);
+        Jedis jedis = new Jedis("192.168.1.132",6379);
         System.out.println("连接成功");
         //设置 redis 字符串数据
         jedis.set("runoobkey", "www.runoob.com");

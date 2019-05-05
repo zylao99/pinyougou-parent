@@ -6,7 +6,7 @@
     <!--配置solr服务器的地址-->
     <bean class="org.apache.solr.client.solrj.impl.HttpSolrServer" id="httpSolrServer">
         <!--core 的名称 可以不写，默认使用collection1-->
-        <constructor-arg name="baseURL" value="http://192.168.25.135:8080/solr"></constructor-arg>
+        <constructor-arg name="baseURL" value="http://192.168.1.132:8081/solr"></constructor-arg>
     </bean>
 
     <!--配置solrTempalte 类 -->
