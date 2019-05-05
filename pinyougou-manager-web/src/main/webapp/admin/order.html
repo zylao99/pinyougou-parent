@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>订单管理</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!--引入JS-->
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+
+    <!-- 分页组件开始 -->
+    <script src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <!-- 分页组件结束 -->
+
+    <!--base_pagination.js-->
+    <script src="../js/base_pagination.js"></script>
+    <script src="../js/service/orderService.js"></script>
+    <!--引入baseController.js-->
+    <script src="../js/controller/baseController.js"></script>
+    <script src="../js/controller/orderController.js"></script>
+
+
+</head>
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="orderController"
+      ng-init="findAll()">
+<!-- .box-body -->
+<div class="box-header with-border">
+    <h3 class="box-title">订单管理</h3>
+</div>
+
+<div class="box-body">
+
+    <!-- 数据表格 -->
+    <div class="table-box">
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <!--<button type="button" class="btn btn-default" title="新建" data-toggle="modal"
+                            data-target="#editModal"><i class="fa fa-file-o"></i> 新建
+                    </button>
+                    <button type="button" class="btn btn-default" title="删除" ng-click="dele()"><i
+                            class="fa fa-trash-o"></i> 删除
+                    </button>-->
+                    <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
+                            class="fa fa-refresh"></i> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+
+            </div>
+        </div>
+        <!--工具栏/-->
+        <!--数据列表-->
+        <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+            <thead>
+            <tr>
+                <th class="" style="padding-right:0px">
+                    <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                </th>
+                <th class="sorting_asc">订单ID</th>
+                <th class="sorting">用户ID</th>
+                <th class="sorting">收货人</th>
+                <th class="sorting">收货地址</th>
+                <th class="sorting">商家ID</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="entity in list">
+                <td><input type="checkbox" ng-click="updateSelection($event,entity.orderId)"></td>
+                <td>{{entity.orderId}}</td>
+                <td>{{entity.userId}}</td>
+                <td>{{entity.receiver}}</td>
+                <td>{{entity.receiverAreaName}}</td>
+                <td>{{entity.sellerId }}</td>
+                <td class="text-center">
+                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#orderModal"
+                            ng-click="findOne(entity.orderId)">详情
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!--数据列表/-->
+        <tm-pagination conf="paginationConf"></tm-pagination>
+
+    </div>
+    <!-- 数据表格 /-->
+
+
+</div>
+<!-- /.box-body -->
+
+<!-- 商家详情 -->
+<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">订单详情</h3>
+            </div>
+            <div class="modal-body">
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#home" data-toggle="tab">收货人信息</a></li>
+                    <li><a href="#linkman" data-toggle="tab">交易信息</a></li>
+                    <li><a href="#certificate" data-toggle="tab">物流信息</a></li>
+                    <li><a href="#ceo" data-toggle="tab">评价&留言</a></li>
+                </ul>
+
+                <!-- 选项卡开始 -->
+                <div id="myTabContent" class="tab-content" ng-repeat="item in list">
+                    <div class="tab-pane" id="home">
+                            <br>
+                            <table class="table table-bordered table-striped " width="800px">
+                                <tr>
+                                    <td>收货人</td>
+                                    <td>{{item.receiver}}</td>
+                                </tr>
+                                <tr>
+                                    <td>收货人手机</td>
+                                    <td>{{item.receiverMobile}}</td>
+                                </tr>
+                                <tr>
+                                    <td>收货人地区名称(省，市，县)街道</td>
+                                    <td>{{item.receiverAreaName}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>收货人邮编</td>
+                                    <td>{{item.receiverZipCode}}</td>
+                                </tr>
+                            </table>
+                    </div>
+                    <div class="tab-pane fade" id="linkman">
+                        <br>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <td>实付金额</td>
+                                <td>{{item.payment}}</td>
+                            </tr>
+                            <tr>
+                                <td>状态</td>
+                                <td>{{status[item.status]}}</td>
+                            </tr>
+                            <tr>
+                                <td>支付类型</td>
+                                <td>{{type[item.paymentType-1]}}</td>
+                            </tr>
+                            <tr>
+                                <td>订单创建时间</td>
+                                <td>{{item.createTime}}</td>
+                            </tr>
+                            <tr>
+                                <td>订单更新时间</td>
+                                <td>{{item.updateTime}}</td>
+                            </tr>
+                            <tr>
+                                <td>交易完成时间</td>
+                                <td>{{item.endTime}}</td>
+                            </tr>
+                            <tr>
+                                <td>交易关闭时间</td>
+                                <td>{{item.closeTime}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="certificate">
+                        <br>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <td>邮费</td>
+                                <td>{{item.postFee}}</td>
+                            </tr>
+                            <tr>
+                                <td>发货时间</td>
+                                <td>{{item.consignTime}}</td>
+                            </tr>
+                            <tr>
+                                <td>物流名称</td>
+                                <td>{{item.shippingName}}</td>
+                            </tr>
+                            <tr>
+                                <td>物流单号</td>
+                                <td>{{item.shippingcCode}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="ceo">
+                        <br>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <td>买家是否已经评价</td>
+                                <td>{{item.buyerTate}}</td>
+                            </tr>
+                            <tr>
+                                <td>买家留言</td>
+                                <td>{{item.buyerMessage}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- 选项卡结束 -->
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>
