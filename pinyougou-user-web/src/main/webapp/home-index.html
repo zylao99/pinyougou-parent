@@ -15,10 +15,12 @@
     <script src="plugins/angularjs/angular.min.js"></script>
     <script src="js/base.js"></script>
     <script src="js/service/findOrdersService.js"></script>
-    <script src="js/controller/findOrdersController.js"></script>
+    <script src="js/service/loginService.js"></script>
+    <script src="js/service/userService.js"></script>
+    <script src="js/controller/userController.js"></script>
 </head>
 
-<body ng-app="pinyougou" ng-controller="findOrdersController" ng-init="findAllOrders()">
+<body ng-app="pinyougou" ng-controller="userController" ng-init="findAllOrders();showName()">
 <!-- 头部栏位 -->
 <!--页面顶部-->
 <div id="nav-bottom">
@@ -159,9 +161,9 @@
             <div class="yui3-u-1-6 list">
 
                 <div class="person-info">
-                    <div class="person-photo"><img src="img/_/photo.png" alt=""></div>
+                    <div class="person-photo"><img ng-src="{{loginPic}}" width="50px" height="50px" style="border-radius: 25px" alt=""></div>
                     <div class="person-account">
-                        <span class="name">Michelle</span>
+                        <span class="name">{{loginName}}</span>
                         <span class="safe"><a href="/logout/cas">退出</a></span>
                     </div>
                     <div class="clearfix"></div>
