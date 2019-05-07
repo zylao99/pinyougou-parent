@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public PageResult findPage(TbUser user, int pageNum, int pageSize) {
 
-		updateStatus();
+		//updateStatus();
 
 
 		PageHelper.startPage(pageNum, pageSize);
@@ -211,10 +211,11 @@ public class UserServiceImpl implements UserService {
 
 		//查询活跃用户
 		List<TbUser> userList = userMapper.selectByExample(null);
-		for (TbUser tbUser : userList) {
+		System.out.println(userList.size());
+	/*	for (TbUser tbUser : userList) {
 			//获取用户的最后登录时间
 			Date lastLoginTime = tbUser.getLastLoginTime();
-
+			System.out.println(tbUser.getUsername());
 			//获取当前时间，将这个时间减去三个月
 			Date date = new Date();
 			Calendar rightNow = Calendar.getInstance();
@@ -235,7 +236,7 @@ public class UserServiceImpl implements UserService {
 			numMap.put("activeNum",activeNum);
 			numMap.put("noActiveNum",noActiveNum);
 
-		}
+		}*/
 
 		return numMap;
 	}
@@ -262,23 +263,23 @@ public class UserServiceImpl implements UserService {
 		for (TbUser tbUser : userList) {
 			//获取用户的最后登录时间
 			Date lastLoginTime = tbUser.getLastLoginTime();
-
+			System.out.println("最后登录时间："+lastLoginTime);
 			//获取当前时间，将这个时间减去三个月
 			Date date = new Date();
 			Calendar rightNow  = Calendar.getInstance();
 			rightNow.setTime(date);
 			rightNow .add(Calendar.MONTH,-3);
 			Date time = rightNow.getTime();
-
+			System.out.println("大于零吗："+time.getTime());
 
 			//判断，如果time > lastLoginTime    表示已经超过三个月未登录   将使用状态设为非正常
 			Long id = tbUser.getId();
-			if (time.getTime() > lastLoginTime.getTime()){  //三个月
+			/*if (time.getTime() > lastLoginTime.getTime()){  //三个月
 				//更新数据库，将使用状态设为非正常
 				tbUser.setStatus("1");
 			}else {
 				tbUser.setStatus("0");
-			}
+			}*/
 			TbUserExample example = new TbUserExample();
 			Criteria criteria = example.createCriteria();
 			criteria.andIdEqualTo(id);

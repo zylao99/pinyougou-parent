@@ -5,18 +5,14 @@ app.controller('userController' ,function($scope,userService,findOrdersService,l
 	$scope.showName = function () {
 		loginService.loadLoginName().success(function (data) {
 			$scope.loginName = data.loginName;
+			$scope.loginId = data.loginId;
 			$scope.loginPic = data.loginPic;
-			$scope.findOne($scope.loginName);
-			$scope.findAddressList();
+			$scope.findOne($scope.loginId);
+			//$scope.findAddressList();
 		})
 	};
 
-
-
-	//控制层
-	app.controller('findOrdersController' ,function($scope,findOrdersService) {
-
-		$scope.findAllOrders=function(){
+			$scope.findAllOrders=function(){
 			findOrdersService.findAllOrders().success(
 				function (result) {
 					$scope.Orderlist=result;
@@ -24,19 +20,32 @@ app.controller('userController' ,function($scope,userService,findOrdersService,l
 			)
 		}
 
+
 		$scope.topayhtml=function (orderId) {
 			window.location="/pay.html#?orderId="+orderId;
 		}
-	})
 
 
+	/*	//查询订单收货人地址列表
+		$scope.findAddressList = function () {
+			addressService.findAddressList().success(
+				function (response) {
+					$scope.addressList = response;
+				}
+			);
+		};*/
 
-
-
-
-
-
-
+		$scope.entity = {};
+		//查询实体
+		$scope.findOne = function (id) {
+			userService.findOne(id).success(
+				function(response){
+					$scope.entity= response;
+					$scope.birthday = $scope.entity.birthday.substring(0,10);
+					$scope.date = $scope.birthday.split("-");
+				}
+			);
+		};
 
 
 
